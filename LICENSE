@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "title": "Salary",
+  "amount": 5000.00,
+  "date": "2024-01-15",
+  "type": "income",
+  "category": "Salary",
+  "notes": "Monthly salary",
+  "created_at": "2024-01-15T10:30:00"
+}

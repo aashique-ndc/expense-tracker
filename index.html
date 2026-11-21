@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-900 shadow-2xl transform -translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-wallet text-3xl text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-xl font-bold dark:text-white">ExpenseTracker</span>
+                </div>
+                <button id="closeSidebar" class="lg:hidden text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <nav class="space-y-2">
+                <a href="#dashboard" class="nav-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-gray-800">
+                    <i class="fas fa-chart-pie w-5 text-blue-600 dark:text-blue-400"></i>
+                    <span class="font-medium dark:text-white">Dashboard</span>
+                </a>
+                <a href="#transactions" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-gray-800">
+                    <i class="fas fa-list-ul w-5 text-blue-600 dark:text-blue-400"></i>
+                    <span class="font-medium dark:text-white">Transactions</span>
+                </a>
+                <a href="#analysis" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-gray-800">
+                    <i class="fas fa-chart-line w-5 text-blue-600 dark:text-blue-400"></i>
+                    <span class="font-medium dark:text-white">Analysis</span>
+                </a>
+                <a href="#reports" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-gray-800">
+                    <i class="fas fa-file-alt w-5 text-blue-600 dark:text-blue-400"></i>
+                    <span class="font-medium dark:text-white">Reports</span>
+                </a>
+                <a href="#support" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-gray-800">
+                    <i class="fas fa-heart w-5 text-red-500"></i>
+                    <span class="font-medium dark:text-white">Support Me</span>
+                </a>
+            </nav>
+            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="px-4 py-3 bg-blue-50 dark:bg-gray-800 rounded-xl">
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-copyright mr-1"></i>
+                        Md. Ashikur Rahman (1244050)
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Built with Cat AI assistance
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="lg:ml-72">
+        <!-- Header -->
+        <header class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="openSidebar" class="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                        <h1 class="text-xl font-bold dark:text-white hidden sm:block">Smart Expense Tracker</h1>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <!-- Theme Toggle -->
+                        <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-moon dark:hidden"></i>
+                            <i class="fas fa-sun hidden dark:inline"></i>
+                        </button>
+                        <!-- Date Display -->
+                        <span id="currentDate" class="text-sm text-gray-600 dark:text-gray-400 hidden sm:inline"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+            <!-- Dashboard Section -->
+            <section id="dashboard">
+                <!-- Quick Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="stat-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Balance</span>
+                            <i class="fas fa-wallet text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                        <p id="balanceDisplay" class="text-2xl font-bold dark:text-white">$0.00</p>
+                    </div>
+                    <div class="stat-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Income</span>
+                            <i class="fas fa-arrow-up text-green-600 dark:text-green-400"></i>
+                        </div>
+                        <p id="incomeDisplay" class="text-2xl font-bold text-green-600 dark:text-green-400">$0.00</p>
+                    </div>
+                    <div class="stat-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Expense</span>
+                            <i class="fas fa-arrow-down text-red-600 dark:text-red-400"></i>
+                        </div>
+                        <p id="expenseDisplay" class="text-2xl font-bold text-red-600 dark:text-red-400">$0.00</p>
+                    </div>
+                    <div class="stat-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Savings</span>
+                            <i class="fas fa-piggy-bank text-purple-600 dark:text-purple-400"></i>
+                        </div>
+                        <p id="savingsDisplay" class="text-2xl font-bold text-purple-600 dark:text-purple-400">$0.00</p>
+                    </div>
+                </div>
+
+                <!-- Additional Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Savings Rate</span>
+                        <p id="savingsRateDisplay" class="text-xl font-bold dark:text-white">0%</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Health Score</span>
+                        <p id="healthScoreDisplay" class="text-xl font-bold dark:text-white">0</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Budget Progress</span>
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="budgetProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p id="budgetRemainingDisplay" class="text-sm font-medium dark:text-white mt-1">$0.00 remaining</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold dark:text-white mb-4">Expense by Category</h3>
+                        <canvas id="expensePieChart" height="250"></canvas>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold dark:text-white mb-4">Income vs Expense</h3>
+                        <canvas id="incomeExpenseBarChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- Smart Advice -->
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold dark:text-white mb-3">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Smart Financial Advice
+                    </h3>
+                    <div id="adviceContainer" class="space-y-2">
+                        <p class="text-gray-700 dark:text-gray-300">Add some transactions to receive personalized financial advice.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h2 class="text-2xl font-bold dark:text-white">Transactions</h2>
+                        <button id="addTransactionBtn" class="btn-primary px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors flex items-center space-x-2 w-full sm:w-auto justify-center">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Transaction</span>
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <input type="text" id="searchInput" placeholder="Search transactions..." class="flex-1 min-w-[200px] px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select id="typeFilter" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="all">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <select id="categoryFilter" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="all">All Categories</option>
+                        </select>
+                        <select id="sortFilter" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="highest">Highest Amount</option>
+                            <option value="lowest">Lowest Amount</option>
+                        </select>
+                    </div>
+
+                    <!-- Transactions Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-3 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Title</th>
+                                    <th class="text-left py-3 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400 hidden sm:table-cell">Category</th>
+                                    <th class="text-left py-3 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400 hidden md:table-cell">Date</th>
+                                    <th class="text-right py-3 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Amount</th>
+                                    <th class="text-center py-3 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="emptyTransactions" class="text-center py-12 hidden">
+                        <i class="fas fa-inbox text-4xl text-gray-400 dark:text-gray-600 mb-3"></i>
+                        <p class="text-gray-500 dark:text-gray-400">No transactions yet. Start tracking your finances!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Section -->
+            <section id="analysis" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold dark:text-white mb-4">Financial Insights</h3>
+                        <div id="insightsContainer" class="space-y-3">
+                            <p class="text-gray-600 dark:text-gray-400">Add transactions to see detailed financial insights.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold dark:text-white mb-4">Emergency Fund</h3>
+                        <div id="emergencyFundContainer" class="space-y-3">
+                            <p class="text-gray-600 dark:text-gray-400">Add transactions to calculate your emergency fund coverage.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h2 class="text-2xl font-bold dark:text-white">Financial Reports</h2>
+                        <div class="flex flex-wrap gap-2">
+                            <button id="printReportBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center space-x-2">
+                                <i class="fas fa-print"></i>
+                                <span>Print</span>
+                            </button>
+                            <button id="exportJsonBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center space-x-2">
+                                <i class="fas fa-download"></i>
+                                <span>Export JSON</span>
+                            </button>
+                            <button id="importJsonBtn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center space-x-2">
+                                <i class="fas fa-upload"></i>
+                                <span>Import JSON</span>
+                            </button>
+                            <input type="file" id="jsonFileInput" accept=".json" class="hidden">
+                        </div>
+                    </div>
+                    <div id="reportContent" class="space-y-6">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Total Income</span>
+                                <p id="reportIncome" class="text-xl font-bold text-green-600 dark:text-green-400">$0.00</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Total Expense</span>
+                                <p id="reportExpense" class="text-xl font-bold text-red-600 dark:text-red-400">$0.00</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Net Savings</span>
+                                <p id="reportSavings" class="text-xl font-bold text-purple-600 dark:text-purple-400">$0.00</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Transaction Count</span>
+                                <p id="reportCount" class="text-xl font-bold dark:text-white">0</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400 text-center">
+                            <p>All rights reserved by Md. Ashikur Rahman (1244050)</p>
+                            <p>This project was created with the assistance of Cat AI.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Section -->
+            <section id="support" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="text-center max-w-2xl mx-auto">
+                        <i class="fas fa-heart text-6xl text-red-500 mb-6"></i>
+                        <h2 class="text-3xl font-bold dark:text-white mb-4">Support Me</h2>
+                        <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-gray-700 dark:to-gray-700 rounded-xl p-6 mb-6">
+                            <p class="text-gray-800 dark:text-gray-200 leading-relaxed">
+                                So that a small, uneducated developer like me can eat three meals a day and survive, may kind and generous people please give some alms/charity.
+                            </p>
+                            <p class="text-gray-800 dark:text-gray-200 font-semibold mt-3">
+                                My bKash/Nagad/Rocket/Upay number: <span class="text-blue-600 dark:text-blue-400">01816-549143</span>
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <i class="fas fa-female text-pink-500 mr-2"></i>
+                                And those women who cannot give money, may they at least send a thank-you message on WhatsApp.
+                            </p>
+                            <a href="https://wa.me/8801816549143" target="_blank" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium transition-colors">
+                                <i class="fab fa-whatsapp mr-2"></i>Send WhatsApp Message
+                            </a>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i>
+                                And any man who doesn't have money should not use this website.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 max-w-sm transform translate-y-full opacity-0 transition-all duration-300 z-50 border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-3">
+            <div id="toastIcon" class="text-2xl"></div>
+            <p id="toastMessage" class="font-medium dark:text-white"></p>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 bg-white/80 dark:bg-gray-900/80 flex items-center justify-center z-50 hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modalTitle" class="text-2xl font-bold dark:text-white">Add Transaction</h3>
+                    <button id="closeModal" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form id="transactionForm">
+                    <input type="hidden" id="transactionId">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Title *</label>
+                            <input type="text" id="formTitle" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Amount *</label>
+                            <input type="number" id="formAmount" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" step="0.01" min="0.01" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Date *</label>
+                            <input type="date" id="formDate" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Type *</label>
+                            <select id="formType" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Category *</label>
+                            <select id="formCategory" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="Salary">Salary</option>
+                                <option value="Business">Business</option>
+                                <option value="Freelancing">Freelancing</option>
+                                <option value="Investment">Investment</option>
+                                <option value="Bonus">Bonus</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium dark:text-white mb-1">Notes</label>
+                            <textarea id="formNotes" rows="3" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-6">
+                        <button type="submit" id="submitTransactionBtn" class="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors">
+                            Save Transaction
+                        </button>
+                        <button type="button" id="cancelModalBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-white rounded-xl font-medium transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmDialog" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <div class="text-center">
+                <i class="fas fa-exclamation-triangle text-5xl text-yellow-500 mb-4"></i>
+                <h3 class="text-xl font-bold dark:text-white mb-2">Are you sure?</h3>
+                <p id="confirmMessage" class="text-gray-600 dark:text-gray-400 mb-6">This action cannot be undone.</p>
+                <div class="flex gap-3">
+                    <button id="confirmYesBtn" class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors">
+                        Yes, Delete
+                    </button>
+                    <button id="confirmNoBtn" class="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-white rounded-xl font-medium transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

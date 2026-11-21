@@ -1,0 +1,565 @@
+/*
+ * Smart Expense Tracker - Main Stylesheet
+ * All rights reserved by Md. Ashikur Rahman (1244050)
+ * This project was created with the assistance of Cat AI.
+ */
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #f8fafc;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #1a202c;
+    overflow-x: hidden;
+}
+
+/* Dark Mode Base */
+body.dark-mode {
+    background-color: #111827;
+    color: #f3f4f6;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#sidebar.open {
+    transform: translateX(0);
+}
+
+.nav-link {
+    position: relative;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.dark-mode .nav-link {
+    color: #d1d5db;
+}
+
+.nav-link:hover {
+    background-color: #eff6ff;
+    transform: translateX(4px);
+}
+
+.dark-mode .nav-link:hover {
+    background-color: #1f2937;
+}
+
+.nav-link.active {
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.dark-mode .nav-link.active {
+    background-color: #1e3a5f;
+    color: #60a5fa;
+}
+
+.nav-link i {
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover i {
+    transform: scale(1.1);
+}
+
+/* Stat Cards */
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode .stat-card:hover {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card p {
+    transition: color 0.3s ease;
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.dark-mode .spinner {
+    border: 4px solid #374151;
+    border-top: 4px solid #60a5fa;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Toast Notification */
+#toast {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+#toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#toast.success #toastIcon {
+    color: #10b981;
+}
+
+#toast.error #toastIcon {
+    color: #ef4444;
+}
+
+#toast.info #toastIcon {
+    color: #3b82f6;
+}
+
+#toast.warning #toastIcon {
+    color: #f59e0b;
+}
+
+/* Modal Animation */
+#transactionModal,
+#confirmDialog {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#transactionModal > div,
+#confirmDialog > div {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Styles */
+input, select, textarea {
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Button Hover Effects */
+.btn-primary {
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Table Styles */
+#transactionsBody tr {
+    transition: background-color 0.2s ease;
+}
+
+#transactionsBody tr:hover {
+    background-color: #f8fafc;
+}
+
+.dark-mode #transactionsBody tr:hover {
+    background-color: #1f2937;
+}
+
+/* Responsive Table */
+@media (max-width: 640px) {
+    #transactionsBody td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    #transactionsBody td:last-child {
+        padding-right: 0.5rem;
+    }
+}
+
+/* Empty State */
+.empty-state i {
+    opacity: 0.5;
+}
+
+/* Charts Container */
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Budget Progress Bar */
+#budgetProgressBar {
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .stat-card p {
+        font-size: 1.25rem;
+    }
+    
+    .stat-card {
+        padding: 0.75rem;
+    }
+    
+    #sidebar {
+        width: 280px;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card p {
+        font-size: 1rem;
+    }
+    
+    .stat-card .text-sm {
+        font-size: 0.7rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    #sidebar,
+    header,
+    #addTransactionBtn,
+    #openSidebar,
+    #themeToggle,
+    #closeSidebar,
+    #mobileOverlay,
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .dark-mode body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .stat-card,
+    .bg-white,
+    .dark-mode .bg-gray-800 {
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: none !important;
+    }
+    
+    #dashboard,
+    #reports {
+        display: block !important;
+    }
+    
+    #transactions,
+    #analysis,
+    #support {
+        display: none !important;
+    }
+    
+    .print-friendly {
+        padding: 20px;
+    }
+}
+
+/* Print-Friendly Report */
+@media print {
+    #reportContent {
+        page-break-inside: avoid;
+    }
+    
+    #reportContent .grid {
+        page-break-inside: avoid;
+    }
+    
+    .print-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 10px;
+        color: #6b7280;
+        padding: 10px;
+        border-top: 1px solid #e5e7eb;
+    }
+}
+
+/* Accessibility - Focus Visible */
+:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Touch-friendly buttons */
+@media (hover: none) {
+    .btn-primary,
+    .nav-link,
+    button {
+        min-height: 44px;
+    }
+    
+    .stat-card {
+        cursor: default;
+    }
+}
+
+/* Smooth Transitions for Dark Mode */
+.dark-mode,
+.dark-mode * {
+    transition: background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Mobile Overlay */
+#mobileOverlay {
+    transition: opacity 0.3s ease;
+}
+
+#mobileOverlay.show {
+    opacity: 1;
+}
+
+/* Category Badge Styles */
+.category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.category-badge.income {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.category-badge.expense {
+    background-color: #fecaca;
+    color: #991b1b;
+}
+
+.dark-mode .category-badge.income {
+    background-color: #065f46;
+    color: #d1fae5;
+}
+
+.dark-mode .category-badge.expense {
+    background-color: #991b1b;
+    color: #fecaca;
+}
+
+/* Toast Notification Positioning */
+#toast {
+    max-width: 90%;
+}
+
+@media (min-width: 640px) {
+    #toast {
+        max-width: 400px;
+    }
+}
+
+/* Custom Scroll for Sidebar */
+#sidebar {
+    scrollbar-width: thin;
+}
+
+#sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.dark-mode #sidebar::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+/* Smooth Page Transitions */
+main section {
+    animation: fadeInPage 0.4s ease;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Table Actions Buttons */
+.action-btn {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.action-btn:hover {
+    background-color: #f3f4f6;
+    transform: scale(1.1);
+}
+
+.dark-mode .action-btn:hover {
+    background-color: #374151;
+}
+
+.action-btn.edit-btn {
+    color: #3b82f6;
+}
+
+.action-btn.delete-btn {
+    color: #ef4444;
+}
+
+.action-btn.edit-btn:hover {
+    color: #2563eb;
+}
+
+.action-btn.delete-btn:hover {
+    color: #dc2626;
+}
+
+/* Support Page Heart Animation */
+.fa-heart {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Responsive Grid for Cards */
+@media (max-width: 640px) {
+    .grid-cols-2 {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+/* Selection Color */
+::selection {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.dark-mode ::selection {
+    background-color: #60a5fa;
+    color: #1a202c;
+}
